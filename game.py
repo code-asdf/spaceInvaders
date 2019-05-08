@@ -88,7 +88,7 @@ def fire_bullet():
 
 def isCollision(t1,t2):
     distance = math.sqrt(math.pow(t1.xcor()-t2.xcor(),2) + math.pow(t1.ycor()-t2.ycor(),2))
-    if(distance<15):
+    if(distance<16):
         return True
     else:
         return False
@@ -118,14 +118,20 @@ while True:
         bullet.sety(y)
          #check to see if the bullet has gone to the top
 
-        #check collision
-        if(isCollision(bullet,enemy)):
-            #Reset the bullet
-            bullet.hideturtle()
-            bulletstate = "ready"
-            bullet.setposition(0,-400)
-            #Reset the enemy
-            enemy.setposition(-200,250)
+    #check collision
+    if(isCollision(bullet,enemy)):
+        #Reset the bullet
+        bullet.hideturtle()
+        bulletstate = "ready"
+        bullet.setposition(0,-400)
+        #Reset the enemy
+        enemy.setposition(-200,250)
+
+    if enemy.ycor() <= player.ycor():
+        player.hideturtle()
+        enemy.hideturtle()
+        print('Game Over')
+        break
 
         if y > 275:
             bulletstate = "ready"
