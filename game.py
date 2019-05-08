@@ -1,5 +1,6 @@
 import turtle
 import os
+import math
 
 #Set up the screen
 wn = turtle.Screen()
@@ -85,6 +86,13 @@ def fire_bullet():
     bullet.showturtle()
     bulletstate = "fire"
 
+def isCollision(t1,t2):
+    distance = math.sqrt(math.pow(t1.xcor()-t2.xcor(),2) + math.pow(t1.ycor()-t2.ycor(),2))
+    if(distance<15):
+        return True
+    else:
+        return False
+
 #Create keyboard bindings
 turtle.listen()
 turtle.onkey(move_left,"Left")
@@ -108,10 +116,22 @@ while True:
         y = bullet.ycor()
         y+= bulletspeed
         bullet.sety(y)
-        n #check to see if the bullet has gone to the top
+         #check to see if the bullet has gone to the top
+
+        #check collision
+        if(isCollision(bullet,enemy)):
+            #Reset the bullet
+            bullet.hideturtle()
+            bulletstate = "ready"
+            bullet.setposition(0,-400)
+            #Reset the enemy
+            enemy.setposition(-200,250)
+
         if y > 275:
             bulletstate = "ready"
             bullet.hideturtle()
+
+
 
 turtle.exitonclick()
 
