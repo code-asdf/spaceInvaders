@@ -52,7 +52,7 @@ bullet.shape("triangle")
 bullet.penup()
 bullet.speed(0)
 bullet.setheading(90)
-bullet.shapesize(-5,.5)
+bullet.shapesize(.5,.5)
 bullet.hideturtle()
 
 bulletspeed = 20
@@ -72,10 +72,24 @@ def move_right():
         x = 280
     player.setx(x)
 
+def fire_bullet():
+    #Declare bullet state as a global if it needs changed
+    global bulletstate
+    if(bulletstate != "ready"):
+        return
+
+    #Move the bullet to jsut above the player
+    x = player.xcor()
+    y = player.ycor()+10
+    bullet.setposition(x,y)
+    bullet.showturtle()
+    bulletstate = "fire"
+
 #Create keyboard bindings
 turtle.listen()
 turtle.onkey(move_left,"Left")
 turtle.onkey(move_right,"Right")
+turtle.onkey(fire_bullet,"space")
 
 
 #Main game loop
@@ -88,6 +102,16 @@ while True:
         enemyspeed *= -1
         enemy.sety(enemy.ycor()-40)
     enemy.setx(x)
+
+    #Move the bullet
+    if(bulletstate == "fire"):
+        y = bullet.ycor()
+        y+= bulletspeed
+        bullet.sety(y)
+        n #check to see if the bullet has gone to the top
+        if y > 275:
+            bulletstate = "ready"
+            bullet.hideturtle()
 
 turtle.exitonclick()
 
