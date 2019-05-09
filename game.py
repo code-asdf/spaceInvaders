@@ -21,6 +21,19 @@ for side in range(4):
     border_pen.lt(90)
 border_pen.hideturtle()
 
+#Set the score to 0
+score = 0
+
+#Draw the score
+score_pen = turtle.Turtle()
+score_pen.speed(0)
+score_pen.color("white")
+score_pen.penup()
+score_pen.setposition(-290,240)
+scorestring = "Score: %s" %score
+score_pen.write(scorestring,False,align="left",font=("Arial",14,"normal"))
+score_pen.hideturtle()
+
 #Create the player turtle
 player = turtle.Turtle()
 player.color("blue")
@@ -71,6 +84,7 @@ bullet.speed(0)
 bullet.setheading(90)
 bullet.shapesize(.5,.5)
 bullet.hideturtle()
+bullet.setposition(0, -400)
 
 bulletspeed = 20
 
@@ -125,7 +139,8 @@ while True:
         x+=enemyspeed
         if x > 280 or x < -280:
             enemyspeed *= -1
-            enemy.sety(enemy.ycor()-40)
+            for e in enemies:
+                e.sety(e.ycor()-40)
         enemy.setx(x)
         # check collision
         if (isCollision(bullet, enemy)):
@@ -137,8 +152,13 @@ while True:
             x = random.randint(-200, 200)
             y = random.randint(100, 250)
             enemy.setposition(x, y)
+            #update the score
+            score+=10
+            scorestring = "Score: %s" % score
+            score_pen.clear()
+            score_pen.write(scorestring, False, align="left", font=("Arial", 14, "normal"))
 
-        if enemy.ycor() <= player.ycor():
+        if enemy.ycor() <= player.ycor() + 15:
             player.hideturtle()
             enemy.hideturtle()
             print('Game Over')
